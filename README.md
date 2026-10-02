@@ -20,8 +20,7 @@ catalog (products, variants, categories, brands, images, search/filter/sort), ad
 cp .env.example .env
 docker compose up -d --build
 
-# one-time: create the first migration from the models, then apply it
-docker compose exec api alembic revision --autogenerate -m "initial schema"
+# apply the checked-in initial schema
 docker compose exec api alembic upgrade head
 
 docker compose exec api python -m scripts.seed     # admin user + demo catalog
@@ -30,8 +29,8 @@ docker compose exec api python -m scripts.seed     # admin user + demo catalog
 API: http://localhost:8000 · Docs: http://localhost:8000/docs · Health: `/health`, `/ready`
 Seeded admin: `admin@example.com` / `Admin@12345` (override in `.env`; change it anywhere real).
 
-> Commit the generated file in `migrations/versions/`. From then on, every model change =
-> `make migration m="what changed"` + `make migrate`.
+> For every model change, create a migration with `make migration m="what changed"`,
+> then apply it with `make migrate`.
 
 ## Run locally without Docker
 
